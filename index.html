@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Font Awesome Icons (CDN) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+   
+</head>
+<body>
+
+    <div id="registerPage">
+        <h2>Register</h2>
+        <form id="registerForm">
+            <input type="text" id="username" placeholder="Username" required>
+            <span id="usernameError" class="error"></span>
+            <br>
+
+            <input type="email" id="email" placeholder="Email" required>
+            <span id="emailError" class="error"></span>
+            <br>
+
+            <input type="password" id="password" placeholder="Password" required>
+            <span id="passwordError" class="error"></span>
+
+            <div id="passwordStrength" class="strength"></div>
+            
+            <br>
+
+            <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+            <span id="confirmPasswordError" class="error"></span>
+            <br>
+
+            <button type="submit">Register</button>
+        </form>
+    </div>
+
+    <script>
+        function validateEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        function validatePassword(password) {
+            const strength = document.getElementById("passwordStrength");
+            let strengthMsg = "";
+            if (password.length < 8) {
+                strengthMsg = "Weak: Too short!";
+            } else if (!/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/[0-9]/.test(password) || !/[!@#$%^&*]/.test(password)) {
+                strengthMsg = "Medium: Needs uppercase, lowercase, number, and special character.";
+            } else {
+                strengthMsg = "Strong: Good to go!";
+            }
+            strength.textContent = strengthMsg;
+            return strengthMsg.includes("Strong");
+        }
+
+        document.getElementById("registerForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            let username = document.getElementById("username").value;
+            let email = document.getElementById("email").value;
+            let password = document.getElementById("password").value;
+            let confirmPassword = document.getElementById("confirmPassword").value;
+
+            let isValid = true;
+
+            if (username.length < 3) {
+                document.getElementById("usernameError").textContent = "Username must be at least 3 characters.";
+                isValid = false;
+            } else {
+                document.getElementById("usernameError").textContent = "";
+            }
+
+            if (!validateEmail(email)) {
+                document.getElementById("emailError").textContent = "Invalid email format.";
+                isValid = false;
+            } else {
+                document.getElementById("emailError").textContent = "";
+            }
+
+            if (!validatePassword(password)) {
+                document.getElementById("passwordError").textContent = "Password must meet strength requirements.";
+                isValid = false;
+            } else {
+                document.getElementById("passwordError").textContent = "";
+            }
+
+            if (password !== confirmPassword) {
+                document.getElementById("confirmPasswordError").textContent = "Passwords do not match.";
+                isValid = false;
+            } else {
+                document.getElementById("confirmPasswordError").textContent = "";
+            }
+
+            if (isValid) {
+                alert("Registration Successful!");
+            }
+        });
+  
+    </script>
+
+  
+</body>
+</html>
